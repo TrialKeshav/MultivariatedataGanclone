@@ -24,3 +24,13 @@ python trainRnn.py
 
 Please refer to the `argparse` module in [`train.py`](train.py) for additional training options.
 
+
+### Evaluate
+
+[`evaluation.py`](test.py) provides the script used for evaluation of the generated data.
+
+
+```shell
+python evaluation.py
+```
+
