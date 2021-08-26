@@ -20,14 +20,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # basic parameters
-    parser.add_argument('--output_dir', type=str, default='./pretrained_models/', help='output directory',required=False)
-    parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Data required to be mimced',required=False)
+    parser.add_argument('--output_dir', type=str, default='./pretrained_models/', help='output directory',required=True)
+    parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Data required to be mimced',required=True)
     parser.add_argument('--device', type=str, default='cpu',help='No CUDA cpu else cuda',required=False)
     # dataset parameters
-    parser.add_argument('--batch_size', type=int, default=25, help='batch size used during training',required=False)
-    parser.add_argument('--number_features', type=int, default=47, help='number of features in dataset',required=False)
-    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate',required=False)
-    parser.add_argument('--epochs', type=int, default=25, help='epochs',required=False)
+    parser.add_argument('--batch_size', type=int, default=25, help='batch size used during training',required=True)
+    parser.add_argument('--number_features', type=int, default=47, help='number of features in dataset',required=True)
+    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate',required=True)
+    parser.add_argument('--epochs', type=int, default=25, help='epochs',required=True)
     args = parser.parse_args()
 
 
@@ -38,8 +38,8 @@ if __name__ == '__main__':
 
     generator_mod = generator_module(args)
     discriminator_mod = discriminator_module(args)
-    optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(), lr=args.learning_rate)#.to(device=torch.device(args.device))
-    optimizer_generator = torch.optim.Adam(generator_mod.parameters(), lr=args.learning_rate)#.to(device=torch.device(args.device))
+    optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(), lr=args.learning_rate)
+    optimizer_generator = torch.optim.Adam(generator_mod.parameters(), lr=args.learning_rate)
 
     loss_function = nn.BCELoss()
 
