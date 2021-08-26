@@ -3,18 +3,20 @@ import numpy as np
 import pandas as pd
 from evalution_modules import Eval,Evalcombined
 from sklearn.ensemble import AdaBoostRegressor
+import warnings
+warnings.filterwarnings("ignore")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--gendata_dir', type=str, default='./pretrained_models/finalSyntheticData.csv', help='Generated Data directory',required=False)
-    parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Original Data to be mimced',required=False)
-    parser.add_argument('--n_estimators', type=int, default=125, help='Number of estimators of Adaboostmodel',required=False)
-    parser.add_argument('--random_state', type=int, default=42, help='Random state to considered by adaboost model',required=False)
-    parser.add_argument('--bins', type=int, default=50, help='Number of bins for KDE plot', required=False)
+    parser.add_argument('--gendata_dir', type=str, default='./pretrained_models/finalSyntheticData.csv', help='Generated synthetic data directory',required=True)
+    parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Original data to be mimced',required=True)
+    parser.add_argument('--n_estimators', type=int, default=125, help='Number of estimators of adaboostmodel',required=True)
+    parser.add_argument('--random_state', type=int, default=42, help='Random state to considered by adaboost model',required=True)
+    parser.add_argument('--bins', type=int, default=50, help='Number of bins for KDE plot', required=True)
     parser.add_argument('--pathsave', type=str, default='./pretrained_models/residuals_kdeplot',
-                        help='Path to save residuals KDE plot', required=False)
+                        help='Path and name to save residuals KDE plot', required=True)
     args = parser.parse_args()
 
 
@@ -33,7 +35,7 @@ if __name__ == '__main__':
 
     # Synthetic data
     df1 = pd.read_csv(args.gendata_dir)
-    Xmm = df1.iloc[:, :-1].values
+    Xmm = df1.iloc[:, 1:-1].values
     ymm = df1.iloc[:, -1].values
     adbosstregressor = Eval(Xmm, ymm, AdaBoostRegressor(random_state=args.random_state, n_estimators=args.n_estimators))
     adbosstregressor.Train()
@@ -56,6 +58,15 @@ if __name__ == '__main__':
 
     #Plotting Residuals distribution
     ARcom.Errorkdeplot(args.pathsave,args.bins)
+
+
+
+
+
+
+
+
+
 
 
 
