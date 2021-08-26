@@ -27,7 +27,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=25, help='batch size used during training',required=False)
     parser.add_argument('--number_features', type=int, default=47, help='number of features in dataset',required=False)
     parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate',required=False)
-    parser.add_argument('--epochs', type=int, default=2, help='epochs',required=False)#45
+    parser.add_argument('--epochs', type=int, default=25, help='epochs',required=False)
     args = parser.parse_args()
 
 
@@ -36,8 +36,8 @@ if __name__ == '__main__':
     encodedDataframe = preprocessingFirstColumn(args)
     train_loader = make_train_data(args,encodedDataframe)
 
-    generator_mod = generator_module(args)#.to(device=torch.device(args.device))
-    discriminator_mod = discriminator_module(args)#.to(device=args.device)
+    generator_mod = generator_module(args)
+    discriminator_mod = discriminator_module(args)
     optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(), lr=args.learning_rate)#.to(device=torch.device(args.device))
     optimizer_generator = torch.optim.Adam(generator_mod.parameters(), lr=args.learning_rate)#.to(device=torch.device(args.device))
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     #Load the preprocessed model templates for inverse transformations
     local_labelencoded = pickle.load(open(args.output_dir+'label_encoder.pickle', 'rb'))
     local_onehot_encoder = pickle.load(open(args.output_dir+'onehot_encoder.pickle', 'rb'))
-    local_scaler = pickle.load(open(args.output_dir + 'standard_scaler.pickle', 'rb'))
+    local_scaler = pickle.load(open(args.output_dir + 'MinMax_Scaler.pickle', 'rb'))
     local_pca = pickle.load(open(args.output_dir + 'pca.pickle', 'rb'))
 
     #Genererae synthetic data from the samples
