@@ -1,7 +1,7 @@
 import torch
 import torch.utils.data
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from sklearn.decomposition import PCA
 import pickle
 
@@ -17,7 +17,7 @@ def make_train_data(args,encodedDataframe):
     #dataset = pd.read_csv(args.sample_data)
     Tabular_data = torch.tensor(encodedDataframe.iloc[:, :].values)
     #Scaling the data for future predictions
-    sc = StandardScaler()
+    sc = MinMaxScaler()
     Tabular_data = sc.fit_transform(Tabular_data)
     #Diemensionality reduction to avoid overfitting
     pca = PCA()
