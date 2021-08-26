@@ -23,8 +23,8 @@ def make_train_data(args,encodedDataframe):
     pca = PCA()
     Tabular_data = pca.fit_transform(Tabular_data)
 
-    standardscaler_file = "standard_scaler.pickle"
-    pickle.dump(sc, open(args.output_dir + standardscaler_file, 'wb'))
+    MinMax_Scaler_file = "MinMax_Scaler.pickle"
+    pickle.dump(sc, open(args.output_dir + MinMax_Scaler_file, 'wb'))
     pca_file = "pca.pickle"
     pickle.dump(pca, open(args.output_dir + pca_file, 'wb'))
     return load_dataloader(tabular_data=Tabular_data, batch_size=args.batch_size,args = args)
