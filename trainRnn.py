@@ -21,17 +21,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     # basic parameters
-    parser.add_argument('--output_dir', type=str, default='./pretrainedRNN_models/', help='output directory')
-    parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Data required to be mimced')
+    parser.add_argument('--output_dir', type=str, default='./pretrainedRNN_models/', help='output directory',required=True)
+    parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Data required to be mimced',required=True)
     parser.add_argument('--device', type=str, default='cpu',help='No CUDA cpu else cuda',required=False)
-    parser.add_argument('--cell_type', type=str, default='lstm', help='The type of cells :  lstm or gru')
+    parser.add_argument('--cell_type', type=str, default='lstm', help='The type of cells :  lstm or gru',required=True)
     # dataset parameters
-    parser.add_argument('--batch_size', type=int, default=25, help='batch size used during training')
-    parser.add_argument('--num_layers', type=int, default=2, help='number of layers in the LSTM')
-    parser.add_argument('--hidden_size', type=int, default=128, help='number of hidden diemensions')
-    parser.add_argument('--number_features', type=int, default=47, help='number of features in dataset')
-    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate')
-    parser.add_argument('--epochs', type=int, default=25, help='epochs')
+    parser.add_argument('--batch_size', type=int, default=25, help='batch size used during training',required=True)
+    parser.add_argument('--num_layers', type=int, default=2, help='number of layers in the LSTM',required=True)
+    parser.add_argument('--hidden_size', type=int, default=128, help='number of hidden diemensions',required=True)
+    parser.add_argument('--number_features', type=int, default=47, help='number of features in dataset has to include onehot encode columns(categories)',required=False)
+    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate',required=True)
+    parser.add_argument('--epochs', type=int, default=25, help='epochs',required=True)
     args = parser.parse_args()
 
 
@@ -42,17 +42,16 @@ if __name__ == '__main__':
 
     if args.cell_type == 'gru':
         from modulesGru import generator_module, discriminator_module
-        generator_mod = generator_module(args)#.to(device=args.device)
-        discriminator_mod = discriminator_module(args)#.to(device=args.device)
-        optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(), lr=args.learning_rate)#.to(device=args.device)
-        optimizer_generator = torch.optim.Adam(generator_mod.parameters(), lr=args.learning_rate)#.to(device=args.device)
+        generator_mod = generator_module(args)
+        discriminator_mod = discriminator_module(args)
+        optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(), lr=args.learning_rate)
+        optimizer_generator = torch.optim.Adam(generator_mod.parameters(), lr=args.learning_rate)
 
     else:
-        generator_mod = generator_module(args)  # .to(device=args.device)
-        discriminator_mod = discriminator_module(args)  # .to(device=args.device)
-        optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(),lr=args.learning_rate)  # .to(device=args.device)
-        optimizer_generator = torch.optim.Adam(generator_mod.parameters(),lr=args.learning_rate)  # .to(device=args.device)
-
+        generator_mod = generator_module(args)  
+        discriminator_mod = discriminator_module(args)  
+        optimizer_discriminator = torch.optim.Adam(discriminator_mod.parameters(),lr=args.learning_rate) 
+        optimizer_generator = torch.optim.Adam(generator_mod.parameters(),lr=args.learning_rate)  
 
     loss_function = nn.BCELoss()
     dec_loss = list()
@@ -118,18 +117,18 @@ if __name__ == '__main__':
     regeneratedCellID = revert_encoding(gen_rescaled_sample[:, :21],local_labelencoded)
 
     #Reconstruct the dataframe from the samples
-    reconDataframe = pd.DataFrame(data=np.array(gen_rescaled_sample[:, 21:]),columns=['Velocity', 'Load', 'EdgeUsersDist', 'Hysteresis', 'TTT',
+    reconDataframe = pd.DataFrame(data=np.array(gen_rescaled_sample[:, 20:]),columns=['Velocity', 'Load', 'EdgeUsersDist', 'Hysteresis', 'TTT',
                                'CIO(3)', 'CIO(4)', 'CIO(5)', 'CIO(6)', 'CIO(7)', 'CIO(8)', 'CIO(9)',
                                'CIO(10)', 'CIO(11)', 'CIO(12)', 'CIO(13)', 'CIO(14)', 'CIO(15)',
                                'CIO(16)', 'CIO(17)', 'CIO(18)', 'CIO(19)', 'CIO(20)', 'CIO(21)',
-                               'CIO(22)', 'CIO(23)'])
+                               'CIO(22)', 'CIO(23)' , 'GKPI'])
     reconDataframe['Cell_ID'] = regeneratedCellID
 
     finalSyntheticData = reconDataframe.reindex(columns=['Cell_ID', 'Velocity', 'Load', 'EdgeUsersDist', 'Hysteresis', 'TTT',
                               'CIO(3)', 'CIO(4)', 'CIO(5)', 'CIO(6)', 'CIO(7)', 'CIO(8)', 'CIO(9)',
                               'CIO(10)', 'CIO(11)', 'CIO(12)', 'CIO(13)', 'CIO(14)', 'CIO(15)',
                               'CIO(16)', 'CIO(17)', 'CIO(18)', 'CIO(19)', 'CIO(20)', 'CIO(21)',
-                              'CIO(22)', 'CIO(23)'])
+                              'CIO(22)', 'CIO(23)' , 'GKPI'])
 
     #Save the output to the directory
     finalSyntheticData.to_csv(args.output_dir+"finalSyntheticData.csv")
@@ -142,3 +141,4 @@ if __name__ == '__main__':
     plt.title('Loss Convergence for Recurrent Neural GANs')
     plt.legend(loc='upper right')
     plt.savefig(args.output_dir + "Performance_model.png")
+
