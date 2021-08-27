@@ -14,8 +14,8 @@ Please refer to [`requirements.txt`](requirements.txt) for required packages.
 ```shell
 python train.py \
   --output_dir ./pretrained_models/ \
-	--sample_data ./example_data/sample_data.txt \
-	--batch_size 25 \
+  --sample_data ./example_data/sample_data.txt \
+  --batch_size 25 \
   --learning_rate 0.001 \
   --epochs 25 \ 
 ```
@@ -26,11 +26,11 @@ python train.py \
 ```shell
 python trainRnn.py \
   --output_dir ./pretrainedRNN_models/ \
-	--sample_data ./example_data/sample_data.txt \
+  --sample_data ./example_data/sample_data.txt \
   --cell_type lstm \
   --num_layers 2 \
   --hidden_size 128 \
-	--batch_size 25 \
+  --batch_size 25 \
   --learning_rate 0.001 \
   --epochs 25 \
 ```
@@ -45,11 +45,11 @@ Please refer to the `argparse` module in [`train.py`](train.py) for additional t
 
 ```shell
 python evaluation.py \
-  --gendata_dir ./pretrained_models/finalSyntheticData.csv \
-	--sample_data ./example_data/sample_data.txt \
+  --gendata_dir ./pretrained_models/finalSyntheticData.txt \
+  --sample_data ./example_data/sample_data.txt \
   --n_estimators 125 \
   --random_state 42 \
   --bins 50 \
-	--pathsave ./pretrained_models/residuals_kdeplot \
+  --pathsave ./pretrained_models/residuals_kdeplot \
 ```
 
