@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore")
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--gendata_dir', type=str, default='./pretrained_models/finalSyntheticData.csv', help='Generated synthetic data directory',required=True)
+    parser.add_argument('--gendata_dir', type=str, default='./pretrained_models/finalSyntheticData.txt', help='Generated synthetic data directory',required=True)
     parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Original data to be mimced',required=True)
     parser.add_argument('--n_estimators', type=int, default=125, help='Number of estimators of adaboostmodel',required=True)
     parser.add_argument('--random_state', type=int, default=42, help='Random state to considered by adaboost model',required=True)
