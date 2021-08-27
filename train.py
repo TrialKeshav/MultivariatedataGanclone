@@ -117,7 +117,7 @@ if __name__ == '__main__':
                               'CIO(22)', 'CIO(23)' , 'GKPI'])
 
     #Save the output to the directory
-    finalSyntheticData.to_csv(args.output_dir+"finalSyntheticData.csv")
+    finalSyntheticData.to_csv(args.output_dir+"finalSyntheticData.txt")
 
     #Save plots of the training
     plt.plot(np.arange(0, args.epochs, 1), np.array(dec_loss), label='Discriminator Loss')
