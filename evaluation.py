@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from evalution_modules import Eval,Evalcombined
 from sklearn.ensemble import AdaBoostRegressor
+from preprocessing import preprocessingFirstColumn
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -11,6 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--gendata_dir', type=str, default='./pretrained_models/finalSyntheticData.txt', help='Generated synthetic data directory',required=True)
+    parser.add_argument('--output_dir', type=str, default='./pretrained_models/', help='Directory to write temporary files',required=True)
     parser.add_argument('--sample_data', type=str, default='./example_data/sample_data.txt', help='Original data to be mimced',required=True)
     parser.add_argument('--n_estimators', type=int, default=125, help='Number of estimators of adaboostmodel',required=True)
     parser.add_argument('--random_state', type=int, default=42, help='Random state to considered by adaboost model',required=True)
@@ -21,9 +23,9 @@ if __name__ == '__main__':
 
 
     # Orginal data
-    df0 = pd.read_csv(args.sample_data)
-    X_train = df0.iloc[:, :-1].values
-    y_train = df0.iloc[:, -1].values
+    encodedDataframe = preprocessingFirstColumn(args)
+    X_train = encodedDataframe.iloc[:, :-1].values
+    y_train = encodedDataframe.iloc[:, -1].values
     adbosstregressor0 = Eval(X_train, y_train, AdaBoostRegressor(random_state=args.random_state, n_estimators=args.n_estimators))
     adbosstregressor0.Train()
     _ = adbosstregressor0.predict()
@@ -34,8 +36,10 @@ if __name__ == '__main__':
     print('\n')
 
     # Synthetic data
-    df1 = pd.read_csv(args.gendata_dir)
-    Xmm = df1.iloc[:, 1:-1].values
+    args.sample_data = args.gendata_dir
+    df1 = preprocessingFirstColumn(args)
+    #df1 = pd.read_csv(args.gendata_dir)
+    Xmm = df1.iloc[:, :-1].values
     ymm = df1.iloc[:, -1].values
     adbosstregressor = Eval(Xmm, ymm, AdaBoostRegressor(random_state=args.random_state, n_estimators=args.n_estimators))
     adbosstregressor.Train()
@@ -55,22 +59,6 @@ if __name__ == '__main__':
     print('Mean Squared Error of the combined original and generated synthetic data modelled with Adaboost Regressor = {0}'.format(ARcom.MSE()))
     print('Root Mean Squared Error of combined original and generated synthetic data modelled with Adaboost Regressor = {0}'.format(np.sqrt(ARcom.MSE())))
     print('Explained Variance Score of combined original and generated synthetic data modelled with Adaboost Regressor = {0}'.format(ARcom.Explained_Variance_Score()))
-
-    #Plotting Residuals distribution
-    ARcom.Errorkdeplot(args.pathsave,args.bins)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
