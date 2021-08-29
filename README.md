@@ -47,6 +47,7 @@ Please refer to the `argparse` module in [`train.py`](train.py) for additional t
 python evaluation.py \
   --gendata_dir ./pretrained_models/finalSyntheticData.txt \
   --sample_data ./example_data/sample_data.txt \
+  --output_dir  ./pretrained_models/ \
   --n_estimators 125 \
   --random_state 42 \
   --bins 50 \
