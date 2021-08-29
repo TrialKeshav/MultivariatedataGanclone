@@ -25,7 +25,7 @@ if __name__ == '__main__':
     parser.add_argument('--device', type=str, default='cpu',help='No CUDA cpu else cuda',required=False)
     # dataset parameters
     parser.add_argument('--batch_size', type=int, default=25, help='batch size used during training',required=True)
-    parser.add_argument('--number_features', type=int, default=47, help='number of features in dataset has to include onehot encode columns(categories)',required=False)
+    parser.add_argument('--number_features', type=int, default=48, help='number of features in dataset has to include onehot encode columns(categories)',required=False)
     parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate',required=True)
     parser.add_argument('--epochs', type=int, default=25, help='epochs',required=True)
     args = parser.parse_args()
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     regeneratedCellID = revert_encoding(gen_rescaled_sample[:, :21],local_labelencoded)
 
     #Reconstruct the dataframe from the samples
-    reconDataframe = pd.DataFrame(data=np.array(gen_rescaled_sample[:, 20:]),columns=['Velocity', 'Load', 'EdgeUsersDist', 'Hysteresis', 'TTT',
+    reconDataframe = pd.DataFrame(data=np.array(gen_rescaled_sample[:, 21:]),columns=['Velocity', 'Load', 'EdgeUsersDist', 'Hysteresis', 'TTT',
                                'CIO(3)', 'CIO(4)', 'CIO(5)', 'CIO(6)', 'CIO(7)', 'CIO(8)', 'CIO(9)',
                                'CIO(10)', 'CIO(11)', 'CIO(12)', 'CIO(13)', 'CIO(14)', 'CIO(15)',
                                'CIO(16)', 'CIO(17)', 'CIO(18)', 'CIO(19)', 'CIO(20)', 'CIO(21)',
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                               'CIO(22)', 'CIO(23)' , 'GKPI'])
 
     #Save the output to the directory
-    finalSyntheticData.to_csv(args.output_dir+"finalSyntheticData.txt")
+    finalSyntheticData.to_csv(args.output_dir+"finalSyntheticData.csv", index = False, header = True)
 
     #Save plots of the training
     plt.plot(np.arange(0, args.epochs, 1), np.array(dec_loss), label='Discriminator Loss')
