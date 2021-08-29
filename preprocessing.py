@@ -46,7 +46,7 @@ def preprocessingFirstColumn(args):
     onehot_cellidDataframe['CIO(21)'] = dataset["CIO(21)"]
     onehot_cellidDataframe['CIO(22)'] = dataset["CIO(22)"]
     onehot_cellidDataframe['CIO(23)'] = dataset["CIO(23)"]
-
+    onehot_cellidDataframe['GKPI'] = dataset["GKPI"]
     #Saving the encoded format
     labelencoded_file = "label_encoder.pickle"
     pickle.dump(label_encoder, open(args.output_dir+labelencoded_file, 'wb'))
