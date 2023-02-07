@@ -9,6 +9,7 @@ class Discriminator(nn.Module):
         self.model = nn.Sequential(
             nn.Linear(number_Features, batch_size*number_Features*2),
             nn.ReLU(),
+            nn.ReLU(),
             nn.Dropout(0.5),
             nn.Linear(batch_size*number_Features*2, batch_size*number_Features*3),
             nn.ReLU(),
